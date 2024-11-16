@@ -20,38 +20,8 @@ function App() {
     windSpeed: 12
   });
 
-  const [crops] = useState<CropData[]>([
-    {
-      id: '1',
-      name: 'Wheat Field A',
-      status: 'healthy',
-      moisture: 75,
-      temperature: 22,
-      lastUpdated: '2024-03-15',
-      location: 'North Section',
-      type: 'Wheat',
-      area: 5.2
-    },
-    {
-      id: '2',
-      name: 'Corn Field B',
-      status: 'warning',
-      moisture: 45,
-      temperature: 26,
-      lastUpdated: '2024-03-15',
-      location: 'South Section',
-      type: 'Corn',
-      area: 3.8
-    }
-  ]);
-
-  const [moistureData] = useState<SensorData[]>([
-    { timestamp: '08:00', value: 65 },
-    { timestamp: '10:00', value: 68 },
-    { timestamp: '12:00', value: 72 },
-    { timestamp: '14:00', value: 75 },
-    { timestamp: '16:00', value: 71 }
-  ]);
+  const [crops, setCrops] = useState<CropData[]>([]);
+  const [moistureData, setMoistureData] = useState<SensorData[]>([]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -59,6 +29,29 @@ function App() {
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       fetchUserProfile();
     }
+
+    // Fetch real-time crop data
+    const fetchCrops = async () => {
+      try {
+        const response = await api.get('/crops'); // Assuming endpoint for crops
+        setCrops(response.data);
+      } catch (error) {
+        console.error('Error fetching crops data:', error);
+      }
+    };
+
+    // Fetch real-time moisture data
+    const fetchMoistureData = async () => {
+      try {
+        const response = await api.get('/moisture-data'); // Assuming endpoint for moisture data
+        setMoistureData(response.data);
+      } catch (error) {
+        console.error('Error fetching moisture data:', error);
+      }
+    };
+
+    fetchCrops();
+    fetchMoistureData();
   }, []);
 
   const fetchUserProfile = async () => {
@@ -89,6 +82,7 @@ function App() {
       localStorage.setItem('token', response.data.token);
       api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
       await fetchUserProfile();
+      alert('Registration successful! Welcome aboard.');
     } catch (error) {
       console.error('Registration error:', error);
       alert('Registration failed. Please try again.');

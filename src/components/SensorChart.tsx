@@ -2,13 +2,23 @@ import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import type { SensorData } from '../types';
 
+// Defining the correct interface for props
 interface SensorChartProps {
-  data: SensorData[];
+  data: SensorData[]; // An array of SensorData
   title: string;
   color: string;
 }
 
 export function SensorChart({ data, title, color }: SensorChartProps) {
+  if (!data || data.length === 0) {
+    return (
+      <div className="bg-white rounded-xl shadow-lg p-6">
+        <h2 className="text-xl font-semibold mb-4">{title}</h2>
+        <p>No data available</p>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white rounded-xl shadow-lg p-6">
       <h2 className="text-xl font-semibold mb-4">{title}</h2>

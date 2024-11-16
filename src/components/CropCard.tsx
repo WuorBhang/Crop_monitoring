@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plant, Droplets, ThermometerSun } from 'lucide-react';
+import { Droplets, ThermometerSun } from 'lucide-react';
 import type { CropData } from '../types';
 
 interface CropCardProps {
@@ -13,6 +13,9 @@ export function CropCard({ crop }: CropCardProps) {
     critical: 'bg-red-100 text-red-800'
   };
 
+  // Use a fallback if the status is not in the expected list
+  const statusClass = statusColors[crop.status] || 'bg-gray-100 text-gray-800';
+
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
       <div className="flex justify-between items-start mb-4">
@@ -20,7 +23,7 @@ export function CropCard({ crop }: CropCardProps) {
           <h3 className="text-lg font-semibold text-gray-800">{crop.name}</h3>
           <p className="text-sm text-gray-500">{crop.location}</p>
         </div>
-        <span className={`px-3 py-1 rounded-full text-sm ${statusColors[crop.status]}`}>
+        <span className={`px-3 py-1 rounded-full text-sm ${statusClass}`}>
           {crop.status}
         </span>
       </div>

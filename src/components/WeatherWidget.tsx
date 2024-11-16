@@ -1,9 +1,11 @@
 import React from 'react';
 import { Cloud, Droplets, Thermometer, Wind } from 'lucide-react';
-import type { WeatherData } from '../types';
+import type { WeatherData } from '../types'; // Import the interface
+
+
 
 interface WeatherWidgetProps {
-  data: WeatherData;
+  data: WeatherData; // Use the imported WeatherData interface
 }
 
 export function WeatherWidget({ data }: WeatherWidgetProps) {
